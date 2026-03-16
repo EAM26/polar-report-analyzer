@@ -1,8 +1,7 @@
 package org.eamcode.polarreportanalyzer.controller;
 
-import org.antlr.v4.runtime.misc.LogManager;
-import org.eamcode.polarreportanalyzer.model.Training;
-import org.eamcode.polarreportanalyzer.repository.TrainingRepository;
+import org.eamcode.polarreportanalyzer.dto.TrainingRequest;
+import org.eamcode.polarreportanalyzer.dto.TrainingResponse;
 import org.eamcode.polarreportanalyzer.service.TrainingService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,13 +14,13 @@ public class TrainingController {
 
     private final TrainingService trainingService;
 
-    public TrainingController(TrainingRepository trainingRepository, TrainingService trainingService) {
+    public TrainingController(TrainingService trainingService) {
 
         this.trainingService = trainingService;
     }
 
     @PostMapping
-    public Long createTraining(@RequestBody Training training) {
-        return trainingService.createTraining(training).getId();
+    public TrainingResponse createTraining(@RequestBody TrainingRequest request) {
+        return trainingService.createTraining(request);
     }
 }

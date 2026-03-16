@@ -2,10 +2,10 @@ package org.eamcode.polarreportanalyzer.dto;
 
 import java.time.LocalDateTime;
 
-public record TrainingResponse(
-        Long id,
+public record TrainingRequest(
         String name,
         LocalDateTime dateTime,
         String sport,
-        String pathToReport) {
+        String pathToReport
+) {
 }
