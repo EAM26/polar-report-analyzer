@@ -18,12 +18,21 @@ public class ModelMapper {
         );
     }
 
-    public Training toEntity(TrainingRequest request) {
+    public Training mapToEntity(TrainingRequest request) {
         return new Training(
                 request.name(),
                 request.dateTime(),
                 request.sport(),
                 request.pathToReport()
         );
+    }
+
+    public Training updateEntityFromRequest(TrainingRequest request, Training training) {
+        training.setName(request.name());
+        training.setDateTime(request.dateTime());
+        training.setSport(request.sport());
+        training.setPathToReport(request.pathToReport());
+
+        return training;
     }
 }

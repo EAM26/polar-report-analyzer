@@ -23,9 +23,8 @@ public class TrainingService {
     }
 
     public TrainingResponse createTraining(TrainingRequest request) {
-        Training createdTraining = trainingRepository.save(modelMapper.toEntity(request));
+        Training createdTraining = trainingRepository.save(modelMapper.mapToEntity(request));
         return modelMapper.mapToResponse(createdTraining);
-
     }
 
     public List<TrainingResponse> getAllTrainings() {
@@ -40,5 +39,16 @@ public class TrainingService {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "No training found with id: " + id));
         return modelMapper.mapToResponse(training);
 
+    }
+
+    public void deleteTraining(Long id) {
+        trainingRepository.deleteById(id);
+    }
+
+    public TrainingResponse updateTraining(Long id, TrainingRequest request) {
+        Training training = trainingRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Training trainingUpdated = modelMapper.updateEntityFromRequest(request, training);
+        return modelMapper.mapToResponse(trainingRepository.save(trainingUpdated));
     }
 }

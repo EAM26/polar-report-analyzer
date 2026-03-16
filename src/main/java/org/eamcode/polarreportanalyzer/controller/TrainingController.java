@@ -32,4 +32,16 @@ public class TrainingController {
     public TrainingResponse getTrainingById(@PathVariable Long id) {
         return trainingService.getTrainingById(id);
     }
+
+    @DeleteMapping("/{id}")
+    public String deleteTrainingById(@PathVariable Long id) {
+        trainingService.deleteTraining(id);
+        return "Deleted training with id " + id;
+    }
+
+    @PutMapping("/{id}")
+    public TrainingResponse updateTraining(@PathVariable Long id, @RequestBody TrainingRequest request) {
+        return trainingService.updateTraining(id, request);
+
+    }
 }
