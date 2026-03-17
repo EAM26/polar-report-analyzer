@@ -6,6 +6,9 @@ public record TrainingRequest(
         String name,
         LocalDateTime dateTime,
         String sport,
-        String pathToReport
+        String description,
+        String pathToReport,
+        int rpe,
+        LocalDateTime createdAt
 ) {
 }

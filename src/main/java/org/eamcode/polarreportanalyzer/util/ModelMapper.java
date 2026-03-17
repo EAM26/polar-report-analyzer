@@ -14,24 +14,34 @@ public class ModelMapper {
                 training.getName(),
                 training.getDateTime(),
                 training.getSport(),
-                training.getPathToReport()
+                training.getDescription(),
+                training.getPathToReport(),
+                training.getRpe(),
+                training.getCreatedAt()
         );
     }
 
     public Training mapToEntity(TrainingRequest request) {
-        return new Training(
-                request.name(),
-                request.dateTime(),
-                request.sport(),
-                request.pathToReport()
-        );
+        return Training.builder()
+                .name(request.name())
+                .dateTime(request.dateTime())
+                .sport(request.sport())
+                .description(request.description())
+                .pathToReport(request.pathToReport())
+                .rpe(request.rpe())
+                .createdAt(request.createdAt())
+                .build();
+
     }
 
     public Training updateEntityFromRequest(TrainingRequest request, Training training) {
         training.setName(request.name());
         training.setDateTime(request.dateTime());
         training.setSport(request.sport());
+        training.setDescription(request.description());
         training.setPathToReport(request.pathToReport());
+        training.setRpe(request.rpe());
+        training.setCreatedAt(request.createdAt());
 
         return training;
     }

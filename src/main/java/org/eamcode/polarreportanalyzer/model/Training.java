@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Training {
     @Id
@@ -20,12 +24,8 @@ public class Training {
     private String name;
     private LocalDateTime dateTime;
     private String sport;
+    private String description;
     private String pathToReport;
-
-    public Training(String name, LocalDateTime dateTime, String sport, String pathToReport) {
-        this.name = name;
-        this.dateTime = dateTime;
-        this.sport = sport;
-        this.pathToReport = pathToReport;
-    }
+    private int rpe;
+    private LocalDateTime createdAt;
 }
