@@ -63,6 +63,9 @@ public class ModelMapper {
         return Phase.builder()
                 .start(request.start())
                 .stop(request.stop())
+                .hrAvg(request.hrAvg())
+                .speedAvg(request.speedAvg())
+                .distance(request.distance())
                 .training(training)
                 .build();
     }
@@ -77,5 +80,18 @@ public class ModelMapper {
                 phase.getDistance(),
                 phase.getTraining().getId()
         );
+    }
+
+    public Phase updatePhaseFromRequest(PhaseRequest request, Phase phase) {
+        Training training = trainingRepository.findById(request.trainingId()).orElseThrow(() ->
+                new RecordNotFoundException("No training found with id: " + request.trainingId()));
+        phase.setStart(request.start());
+        phase.setStop(request.stop());
+        phase.setHrAvg(request.hrAvg());
+        phase.setSpeedAvg(request.speedAvg());
+        phase.setDistance(request.distance());
+        phase.setTraining(training);
+
+        return phase;
     }
 }

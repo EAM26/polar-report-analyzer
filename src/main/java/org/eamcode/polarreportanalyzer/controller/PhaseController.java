@@ -40,4 +40,15 @@ public class PhaseController {
     public ResponseEntity<PhaseResponse> getPhaseById(@PathVariable long id) {
         return ResponseEntity.ok(phaseService.getPhaseById(id));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePhaseById(@PathVariable long id) {
+        phaseService.deletePhaseById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PhaseResponse> updatePhase(@PathVariable long id, @RequestBody PhaseRequest request) {
+        return ResponseEntity.ok(phaseService.updatePhase(id, request));
+    }
 }

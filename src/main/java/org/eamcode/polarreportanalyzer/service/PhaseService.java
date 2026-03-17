@@ -6,7 +6,6 @@ import org.eamcode.polarreportanalyzer.exception.RecordNotFoundException;
 import org.eamcode.polarreportanalyzer.model.Phase;
 import org.eamcode.polarreportanalyzer.repository.PhaseRepository;
 import org.eamcode.polarreportanalyzer.util.modelmapper.ModelMapper;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,8 +29,22 @@ public class PhaseService {
         return phaseRepository.findAll().stream().map(modelMapper::mapPhaseToResponse).toList();
     }
 
-    public @Nullable PhaseResponse getPhaseById(long id) {
+    public PhaseResponse getPhaseById(long id) {
             return phaseRepository.findById(id).map(modelMapper::mapPhaseToResponse).orElseThrow(() ->
                 new RecordNotFoundException("No"));
+    }
+
+
+
+    public void deletePhaseById(long id) {
+        phaseRepository.deleteById(id);
+    }
+
+    public PhaseResponse updatePhase(long id, PhaseRequest request) {
+        Phase phase = phaseRepository.findById(id).orElseThrow(() ->
+                new RecordNotFoundException("No phase found with id: " + id));
+
+        Phase phaseUpdated =  phaseRepository.save(modelMapper.updatePhaseFromRequest(request, phase));
+        return modelMapper.mapPhaseToResponse(phaseUpdated);
     }
 }
