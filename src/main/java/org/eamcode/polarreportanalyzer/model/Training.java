@@ -1,15 +1,13 @@
 package org.eamcode.polarreportanalyzer.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,6 +24,9 @@ public class Training {
     private String sport;
     private String description;
     private String pathToReport;
-    private int rpe;
+    private Integer rpe;
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Phase> phases;
 }

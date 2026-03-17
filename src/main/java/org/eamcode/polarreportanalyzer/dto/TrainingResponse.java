@@ -9,6 +9,6 @@ public record TrainingResponse(
         String sport,
         String description,
         String pathToReport,
-        int rpe,
+        Integer rpe,
         LocalDateTime createdAt) {
 }

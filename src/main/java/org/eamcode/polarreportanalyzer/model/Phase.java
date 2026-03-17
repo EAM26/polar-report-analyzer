@@ -19,11 +19,11 @@ public class Phase {
 
     private int start;
     private int stop;
-    private double hrAvg;
-    private double speedAvg;
-    private double totalDistance;
+    private Double hrAvg;
+    private Double speedAvg;
+    private Double totalDistance;
 
-//    @ManyToOne
-//    @JoinColumn(name = "training_id")
-//    private Training training;
+    @ManyToOne
+    @JoinColumn(name = "training_id", nullable = false)
+    private Training training;
 }

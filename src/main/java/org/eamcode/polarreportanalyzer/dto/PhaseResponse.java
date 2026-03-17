@@ -4,8 +4,9 @@ public record PhaseResponse(
         long id,
         int start,
         int stop,
-        double hrAvg,
-        double speedAvg,
-        double totalDistance
+        Double hrAvg,
+        Double speedAvg,
+        Double totalDistance,
+        long trainingId
 ) {
 }

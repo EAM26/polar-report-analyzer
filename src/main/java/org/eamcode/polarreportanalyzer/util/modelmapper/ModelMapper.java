@@ -4,12 +4,20 @@ import org.eamcode.polarreportanalyzer.dto.PhaseRequest;
 import org.eamcode.polarreportanalyzer.dto.PhaseResponse;
 import org.eamcode.polarreportanalyzer.dto.TrainingRequest;
 import org.eamcode.polarreportanalyzer.dto.TrainingResponse;
+import org.eamcode.polarreportanalyzer.exception.RecordNotFoundException;
 import org.eamcode.polarreportanalyzer.model.Phase;
 import org.eamcode.polarreportanalyzer.model.Training;
+import org.eamcode.polarreportanalyzer.repository.TrainingRepository;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ModelMapper {
+
+    private final TrainingRepository trainingRepository;
+
+    public ModelMapper(TrainingRepository trainingRepository) {
+        this.trainingRepository = trainingRepository;
+    }
 
     public TrainingResponse mapTrainingToResponse(Training training) {
         return new TrainingResponse(
@@ -50,12 +58,12 @@ public class ModelMapper {
     }
 
     public Phase mapToPhaseEntity(PhaseRequest request) {
+        Training training = trainingRepository.findById(request.trainingId()).orElseThrow(() ->
+                new RecordNotFoundException("No training found with id: " + request.trainingId()));
         return Phase.builder()
                 .start(request.start())
                 .stop(request.stop())
-                .hrAvg(request.hrAvg())
-                .speedAvg(request.speedAvg())
-                .totalDistance(request.totalDistance())
+                .training(training)
                 .build();
     }
 
@@ -66,7 +74,8 @@ public class ModelMapper {
                 phase.getStop(),
                 phase.getHrAvg(),
                 phase.getSpeedAvg(),
-                phase.getTotalDistance()
+                phase.getTotalDistance(),
+                phase.getTraining().getId()
         );
     }
 }

@@ -21,12 +21,13 @@ public class PhaseController {
 
     @PostMapping
     public ResponseEntity<PhaseResponse> createPhase(@RequestBody PhaseRequest request) {
+        System.out.println("Received PhaseRequest: " + request);
         PhaseResponse createdPhase = phaseService.createPhase(request);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(createdPhase.id())
                 .toUri();
-        return ResponseEntity.created(location).body(phaseService.createPhase(request));
+        return ResponseEntity.created(location).body(createdPhase);
     }
 }
