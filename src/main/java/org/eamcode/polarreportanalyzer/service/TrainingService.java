@@ -2,6 +2,7 @@ package org.eamcode.polarreportanalyzer.service;
 
 import org.eamcode.polarreportanalyzer.dto.TrainingRequest;
 import org.eamcode.polarreportanalyzer.dto.TrainingResponse;
+import org.eamcode.polarreportanalyzer.exception.RecordNotFoundException;
 import org.eamcode.polarreportanalyzer.model.Training;
 import org.eamcode.polarreportanalyzer.repository.TrainingRepository;
 import org.eamcode.polarreportanalyzer.util.ModelMapper;
@@ -35,7 +36,7 @@ public class TrainingService {
 
     public TrainingResponse getTrainingById(Long id) {
         Training training = trainingRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "No training found with id: " + id));
+                new RecordNotFoundException("No training found with id: " + id));
         return modelMapper.mapToResponse(training);
     }
 
