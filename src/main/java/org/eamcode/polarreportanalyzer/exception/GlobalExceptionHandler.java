@@ -15,9 +15,9 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(404, ex.getMessage(), request.getRequestURI()));
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneralException(HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
-                body(new ErrorResponse(500, "Something went wrong", request.getRequestURI()));
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ErrorResponse> handleGeneralException(HttpServletRequest request) {
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+//                body(new ErrorResponse(500, "Something went wrong", request.getRequestURI()));
+//    }
 }
