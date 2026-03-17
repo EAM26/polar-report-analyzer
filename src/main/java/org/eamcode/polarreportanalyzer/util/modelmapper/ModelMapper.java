@@ -74,7 +74,7 @@ public class ModelMapper {
                 phase.getStop(),
                 phase.getHrAvg(),
                 phase.getSpeedAvg(),
-                phase.getTotalDistance(),
+                phase.getDistance(),
                 phase.getTraining().getId()
         );
     }

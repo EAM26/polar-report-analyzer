@@ -2,10 +2,14 @@ package org.eamcode.polarreportanalyzer.service;
 
 import org.eamcode.polarreportanalyzer.dto.PhaseRequest;
 import org.eamcode.polarreportanalyzer.dto.PhaseResponse;
+import org.eamcode.polarreportanalyzer.exception.RecordNotFoundException;
 import org.eamcode.polarreportanalyzer.model.Phase;
 import org.eamcode.polarreportanalyzer.repository.PhaseRepository;
 import org.eamcode.polarreportanalyzer.util.modelmapper.ModelMapper;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PhaseService {
@@ -20,5 +24,14 @@ public class PhaseService {
     public PhaseResponse createPhase(PhaseRequest request) {
        Phase phase = modelMapper.mapToPhaseEntity(request);
        return modelMapper.mapPhaseToResponse(phaseRepository.save(phase));
+    }
+
+    public List<PhaseResponse> getAllPhases() {
+        return phaseRepository.findAll().stream().map(modelMapper::mapPhaseToResponse).toList();
+    }
+
+    public @Nullable PhaseResponse getPhaseById(long id) {
+            return phaseRepository.findById(id).map(modelMapper::mapPhaseToResponse).orElseThrow(() ->
+                new RecordNotFoundException("No"));
     }
 }

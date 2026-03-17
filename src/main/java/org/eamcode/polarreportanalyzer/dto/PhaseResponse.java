@@ -6,7 +6,7 @@ public record PhaseResponse(
         int stop,
         Double hrAvg,
         Double speedAvg,
-        Double totalDistance,
+        Double distance,
         long trainingId
 ) {
 }

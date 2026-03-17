@@ -21,7 +21,7 @@ public class Phase {
     private int stop;
     private Double hrAvg;
     private Double speedAvg;
-    private Double totalDistance;
+    private Double distance;
 
     @ManyToOne
     @JoinColumn(name = "training_id", nullable = false)

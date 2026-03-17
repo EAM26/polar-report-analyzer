@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/phases")
@@ -25,9 +26,18 @@ public class PhaseController {
         PhaseResponse createdPhase = phaseService.createPhase(request);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
                 .buildAndExpand(createdPhase.id())
                 .toUri();
         return ResponseEntity.created(location).body(createdPhase);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PhaseResponse>> getAllPhases() {
+        return ResponseEntity.ok(phaseService.getAllPhases());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PhaseResponse> getPhaseById(@PathVariable long id) {
+        return ResponseEntity.ok(phaseService.getPhaseById(id));
     }
 }
