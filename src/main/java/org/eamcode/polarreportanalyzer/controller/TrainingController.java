@@ -1,5 +1,6 @@
 package org.eamcode.polarreportanalyzer.controller;
 
+import com.opencsv.exceptions.CsvValidationException;
 import org.eamcode.polarreportanalyzer.dto.TrainingRequest;
 import org.eamcode.polarreportanalyzer.dto.TrainingResponse;
 import org.eamcode.polarreportanalyzer.service.TrainingService;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class TrainingController {
     }
 
     @PostMapping
-    public ResponseEntity<TrainingResponse> createTraining(@RequestBody TrainingRequest request) {
+    public ResponseEntity<TrainingResponse> createTraining(@RequestBody TrainingRequest request) throws CsvValidationException, IOException {
         TrainingResponse createdTraining = trainingService.createTraining(request);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
