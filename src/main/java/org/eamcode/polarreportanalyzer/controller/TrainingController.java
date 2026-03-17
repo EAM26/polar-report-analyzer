@@ -3,8 +3,11 @@ package org.eamcode.polarreportanalyzer.controller;
 import org.eamcode.polarreportanalyzer.dto.TrainingRequest;
 import org.eamcode.polarreportanalyzer.dto.TrainingResponse;
 import org.eamcode.polarreportanalyzer.service.TrainingService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -19,29 +22,36 @@ public class TrainingController {
     }
 
     @PostMapping
-    public TrainingResponse createTraining(@RequestBody TrainingRequest request) {
-        return trainingService.createTraining(request);
+    public ResponseEntity<TrainingResponse> createTraining(@RequestBody TrainingRequest request) {
+        TrainingResponse createdTraining = trainingService.createTraining(request);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdTraining.id())
+                .toUri();
+
+        return ResponseEntity.created(location).body(createdTraining);
     }
 
     @GetMapping
-    public List<TrainingResponse> getAllTrainings() {
-        return trainingService.getAllTrainings();
+    public ResponseEntity<List<TrainingResponse>> getAllTrainings() {
+        return ResponseEntity.ok(trainingService.getAllTrainings());
     }
 
     @GetMapping("/{id}")
-    public TrainingResponse getTrainingById(@PathVariable Long id) {
-        return trainingService.getTrainingById(id);
+    public ResponseEntity<TrainingResponse> getTrainingById(@PathVariable Long id) {
+        return ResponseEntity.ok(trainingService.getTrainingById(id));
     }
 
     @DeleteMapping("/{id}")
-    public String deleteTrainingById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTrainingById(@PathVariable Long id) {
         trainingService.deleteTraining(id);
-        return "Deleted training with id " + id;
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public TrainingResponse updateTraining(@PathVariable Long id, @RequestBody TrainingRequest request) {
-        return trainingService.updateTraining(id, request);
+    public ResponseEntity<TrainingResponse> updateTraining(@PathVariable Long id, @RequestBody TrainingRequest request) {
+        return ResponseEntity.ok(trainingService.updateTraining(id, request));
 
     }
 }
