@@ -1,4 +1,4 @@
 package org.eamcode.polarreportanalyzer.exception;
 
-public record ErrorResponse(int status, String message) {
+public record ErrorResponse(int status, String message, String uri) {
 }

@@ -46,7 +46,7 @@ public class TrainingService {
 
     public TrainingResponse updateTraining(Long id, TrainingRequest request) {
         Training training = trainingRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND));
+                new RecordNotFoundException("No training found with id: " + id));
         Training trainingUpdated = modelMapper.updateEntityFromRequest(request, training);
         return modelMapper.mapToResponse(trainingRepository.save(trainingUpdated));
     }
