@@ -40,4 +40,8 @@ public class Training {
     @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Phase> phases = new ArrayList<>();
+
+    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<DataPoint> dataPoints = new ArrayList<>();
 }
