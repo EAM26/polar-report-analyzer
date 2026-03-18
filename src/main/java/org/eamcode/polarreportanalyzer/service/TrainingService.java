@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -29,6 +30,7 @@ public class TrainingService {
 
     public TrainingResponse createTraining(TrainingRequest request) throws CsvValidationException, IOException {
         Training training = modelMapper.mapToTrainingEntity(request);
+        training.setCreatedAt(LocalDateTime.now());
         setTrainingFields(training);
         return modelMapper.mapTrainingToResponse(trainingRepository.save(training));
     }
@@ -67,6 +69,7 @@ public class TrainingService {
         training.setTotalDistance(metaData[5]);
         training.setHrAvg(metaData[6]);
         training.setSpeedAvg(metaData[7]);
+        training.setCadenceAvg(metaData[15]);
 
     }
 }

@@ -34,9 +34,8 @@ public class ModelMapper {
                 training.getHrAvg(),
                 training.getSpeedAvg(),
                 training.getTotalDistance(),
+                training.getCadenceAvg(),
                 training.getPhases().stream().map(this::mapPhaseToResponse).toList()
-
-
         );
     }
 
@@ -55,6 +54,7 @@ public class ModelMapper {
                 .hrAvg(request.hrAvg())
                 .speedAvg(request.speedAvg())
                 .totalDistance(request.totalDistance())
+                .cadenceAvg(request.cadenceAvg())
                 .build();
 
     }
@@ -72,6 +72,7 @@ public class ModelMapper {
         training.setHrAvg(request.hrAvg());
         training.setSpeedAvg(request.speedAvg());
         training.setTotalDistance(request.totalDistance());
+        training.setCadenceAvg(training.getPathToReport());
 
         return training;
     }

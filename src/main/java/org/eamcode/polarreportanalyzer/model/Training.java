@@ -34,6 +34,7 @@ public class Training {
     private String hrAvg;
     private String speedAvg;
     private String totalDistance;
+    private String cadenceAvg;
 
 
     @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, orphanRemoval = true)

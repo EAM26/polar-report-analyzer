@@ -18,6 +18,7 @@ public record TrainingRequest(
         String hrAvg,
         String speedAvg,
         String totalDistance,
+        String cadenceAvg,
         List<Phase> phases
 ) {
 }
