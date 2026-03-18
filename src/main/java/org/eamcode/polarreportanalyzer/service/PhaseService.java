@@ -5,7 +5,7 @@ import org.eamcode.polarreportanalyzer.dto.PhaseResponse;
 import org.eamcode.polarreportanalyzer.exception.RecordNotFoundException;
 import org.eamcode.polarreportanalyzer.model.Phase;
 import org.eamcode.polarreportanalyzer.repository.PhaseRepository;
-import org.eamcode.polarreportanalyzer.util.modelmapper.ModelMapper;
+import org.eamcode.polarreportanalyzer.util.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

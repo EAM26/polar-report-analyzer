@@ -1,14 +1,23 @@
 package org.eamcode.polarreportanalyzer.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record TrainingResponse(
         Long id,
         String name,
-        LocalDateTime dateTime,
-        String sport,
         String description,
         String pathToReport,
         Integer rpe,
-        LocalDateTime createdAt) {
+        LocalDateTime createdAt,
+        String date,
+        String startTime,
+        String sport,
+        String duration,
+        String hrAvg,
+        String speedAvg,
+        String totalDistance,
+        String cadenceAvg,
+        List<PhaseResponse> phases
+) {
 }
