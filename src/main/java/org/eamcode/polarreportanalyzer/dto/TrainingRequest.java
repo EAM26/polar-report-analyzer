@@ -1,15 +1,11 @@
 package org.eamcode.polarreportanalyzer.dto;
 
+import org.eamcode.polarreportanalyzer.model.Phase;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record TrainingRequest(
-//        String name,
-//        String dateTime,
-//        String sport,
-//        String description,
-//        String pathToReport,
-//        Integer rpe,
-//        LocalDateTime createdAt
         String name,
         String description,
         String pathToReport,
@@ -21,6 +17,7 @@ public record TrainingRequest(
         String duration,
         String hrAvg,
         String speedAvg,
-        String totalDistance
+        String totalDistance,
+        List<Phase> phases
 ) {
 }

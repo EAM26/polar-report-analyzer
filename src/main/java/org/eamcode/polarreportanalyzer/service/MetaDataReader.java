@@ -18,6 +18,5 @@ public class MetaDataReader {
 
     public List<String[]> readMetaData(String filePath) throws CsvValidationException, IOException {
         return csvReader.readMetaData(filePath);
-//        return new MetaData(metaRows.get(0), metaRows.get(1));
     }
 }

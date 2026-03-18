@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,5 +37,6 @@ public class Training {
 
 
     @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Phase> phases;
+    @Builder.Default
+    private List<Phase> phases = new ArrayList<>();
 }

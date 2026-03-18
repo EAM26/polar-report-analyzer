@@ -34,11 +34,14 @@ public class ModelMapper {
                 training.getHrAvg(),
                 training.getSpeedAvg(),
                 training.getTotalDistance(),
-                training.getPhases()
+                training.getPhases().stream().map(this::mapPhaseToResponse).toList()
+
+
         );
     }
 
     public Training mapToTrainingEntity(TrainingRequest request) {
+
         return Training.builder()
                 .name(request.name())
                 .description(request.description())

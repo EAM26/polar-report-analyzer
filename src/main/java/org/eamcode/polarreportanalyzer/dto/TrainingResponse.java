@@ -1,6 +1,5 @@
 package org.eamcode.polarreportanalyzer.dto;
 
-import org.eamcode.polarreportanalyzer.model.Phase;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,6 +17,6 @@ public record TrainingResponse(
         String hrAvg,
         String speedAvg,
         String totalDistance,
-        List<Phase> phases
+        List<PhaseResponse> phases
 ) {
 }

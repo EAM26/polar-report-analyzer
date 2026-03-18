@@ -8,11 +8,13 @@ import org.eamcode.polarreportanalyzer.model.Training;
 import org.eamcode.polarreportanalyzer.repository.TrainingRepository;
 import org.eamcode.polarreportanalyzer.util.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
 
 @Service
+@Transactional
 public class TrainingService {
 
     private final TrainingRepository trainingRepository;
