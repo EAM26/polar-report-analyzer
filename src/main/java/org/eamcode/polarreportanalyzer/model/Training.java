@@ -44,4 +44,9 @@ public class Training {
     @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<DataPoint> dataPoints = new ArrayList<>();
+
+    public void addToDataPoint(DataPoint dataPoint) {
+        dataPoint.setTraining(this);
+        dataPoints.add(dataPoint);
+    }
 }

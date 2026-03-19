@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@Transactional
 public class TrainingService {
 
     private final TrainingRepository trainingRepository;
@@ -31,40 +30,45 @@ public class TrainingService {
         this.csvReader = csvReader;
     }
 
+    @Transactional
     public TrainingResponse createTraining(TrainingRequest request) {
         Training training = modelMapper.mapToTrainingEntity(request);
         training.setCreatedAt(LocalDateTime.now());
 
         List<String[]> allDataRows = getAllDataRows(training);
         metaDataService.setTrainingFields(training, allDataRows.get(1));
+        dataPointService.addDataPointsForTraining(training, allDataRows);
+        trainingRepository.save(training);
 
-        return modelMapper.mapTrainingToResponse(trainingRepository.save(training));
+        return modelMapper.mapTrainingToResponse(training);
     }
 
+    @Transactional(readOnly = true)
     public List<TrainingResponse> getAllTrainings() {
         return trainingRepository.findAll().stream()
                 .map(modelMapper::mapTrainingToResponse)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public TrainingResponse getTrainingById(Long id) {
         Training training = trainingRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException("No training found with id: " + id));
         return modelMapper.mapTrainingToResponse(training);
     }
 
+    @Transactional
     public void deleteTraining(Long id) {
         trainingRepository.deleteById(id);
     }
 
+    @Transactional
     public TrainingResponse updateTraining(Long id, TrainingRequest request) {
         Training training = trainingRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException("No training found with id: " + id));
         Training trainingUpdated = modelMapper.updateTrainingFromRequest(request, training);
         return modelMapper.mapTrainingToResponse(trainingRepository.save(trainingUpdated));
     }
-
-
 
     private List<String[]> getAllDataRows(Training training) {
         return csvReader.readDataRows(training.getPathToReport());
