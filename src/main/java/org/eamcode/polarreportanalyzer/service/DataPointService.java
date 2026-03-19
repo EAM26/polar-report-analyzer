@@ -2,6 +2,7 @@ package org.eamcode.polarreportanalyzer.service;
 
 import org.eamcode.polarreportanalyzer.model.DataPoint;
 import org.eamcode.polarreportanalyzer.model.Training;
+import org.eamcode.polarreportanalyzer.util.DateTimeFormatter;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
@@ -11,6 +12,12 @@ import java.util.List;
 public class DataPointService {
 
 
+    private final DateTimeFormatter dateTimeFormatter;
+
+    public DataPointService(DateTimeFormatter dateTimeFormatter) {
+        this.dateTimeFormatter = dateTimeFormatter;
+    }
+
     public void addDataPointsForTraining(Training training, List<String[]> dataRows) {
         for (int i = 3; i < dataRows.size(); i++) {
             DataPoint dataPoint = new DataPoint();
@@ -19,7 +26,10 @@ public class DataPointService {
             dataPoint.setTimeStamp(row[1].isEmpty() ? null : LocalTime.parse(row[1]));
             dataPoint.setHeartRate(row[2].isEmpty() ? null : Integer.parseInt(row[2]));
             dataPoint.setSpeed(row[3].isEmpty() ? null : Double.parseDouble(row[3]));
-//            dataPoint.setPace(row[4].isEmpty() ? null : Double.parseDouble(row[4]));
+
+            Integer paceInSeconds = row[4].isEmpty() ? null : dateTimeFormatter.formatToSeconds(row[4]);
+            dataPoint.setPaceSeconds(paceInSeconds);
+
             dataPoint.setCadence(row[5].isEmpty() ? null : Integer.parseInt(row[5]));
             dataPoint.setAltitude(row[6].isEmpty() ? null : Double.parseDouble(row[6]));
             dataPoint.setStrideLength(row[7].isEmpty() ? null : Double.parseDouble(row[7]));

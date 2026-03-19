@@ -17,7 +17,7 @@ public class DataPoint {
     private LocalTime timeStamp;
     private Integer heartRate;
     private Double speed;
-    private Double pace;
+    private Integer paceSeconds;
     private Integer cadence;
     private Double altitude;
     private Double strideLength;
