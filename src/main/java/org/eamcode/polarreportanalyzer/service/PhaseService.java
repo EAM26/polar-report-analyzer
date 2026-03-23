@@ -14,14 +14,20 @@ import java.util.List;
 public class PhaseService {
     private final ModelMapper modelMapper;
     private final PhaseRepository phaseRepository;
+    private final PhaseCalculatorService phaseCalculatorService;
 
-    public PhaseService(ModelMapper modelMapper, PhaseRepository phaseRepository) {
+    public PhaseService(ModelMapper modelMapper, PhaseRepository phaseRepository, PhaseCalculatorService phaseCalculatorService) {
         this.modelMapper = modelMapper;
         this.phaseRepository = phaseRepository;
+        this.phaseCalculatorService = phaseCalculatorService;
     }
 
     public PhaseResponse createPhase(PhaseRequest request) {
        Phase phase = modelMapper.mapToPhaseEntity(request);
+       List<Double> values = phaseCalculatorService.calculateAvgs(request);
+       phase.setHrAvg(values.getFirst());
+       phase.setDistance(values.get(1));
+       phase.setSpeedAvg(values.getLast());
        return modelMapper.mapPhaseToResponse(phaseRepository.save(phase));
     }
 

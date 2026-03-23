@@ -37,15 +37,10 @@ public class TrainingService {
         Training training = modelMapper.mapToTrainingEntity(request);
         training.setCreatedAt(LocalDateTime.now());
 
-//        Get all data for training
+//        Get all data from csv report for training
         List<String[]> allDataRows = getAllDataRows(training);
         metaDataService.setTrainingFields(training, allDataRows.get(1));
         dataPointService.addDataPointsForTraining(training, allDataRows);
-//        Create Standard phase
-
-
-//        phaseService.createPhase(PhaseRequest.builder());
-
         trainingRepository.save(training);
 
         return modelMapper.mapTrainingToResponse(training);

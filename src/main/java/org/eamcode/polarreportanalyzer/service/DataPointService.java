@@ -1,7 +1,9 @@
 package org.eamcode.polarreportanalyzer.service;
 
+import org.eamcode.polarreportanalyzer.dto.PhaseRequest;
 import org.eamcode.polarreportanalyzer.model.DataPoint;
 import org.eamcode.polarreportanalyzer.model.Training;
+import org.eamcode.polarreportanalyzer.repository.DataPointRepository;
 import org.eamcode.polarreportanalyzer.util.DateTimeFormatter;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,11 @@ public class DataPointService {
 
 
     private final DateTimeFormatter dateTimeFormatter;
+    private final DataPointRepository dataPointRepository;
 
-    public DataPointService(DateTimeFormatter dateTimeFormatter) {
+    public DataPointService(DateTimeFormatter dateTimeFormatter, DataPointRepository dataPointRepository) {
         this.dateTimeFormatter = dateTimeFormatter;
+        this.dataPointRepository = dataPointRepository;
     }
 
     public void addDataPointsForTraining(Training training, List<String[]> dataRows) {
@@ -39,5 +43,10 @@ public class DataPointService {
 
             training.addToDataPoint(dataPoint);
         }
+    }
+
+    public List<DataPoint> getPhaseDataPoints(PhaseRequest request) {
+        return dataPointRepository.findByTrainingIdAndRelativeSecondBetweenOrderByRelativeSecondAsc(
+                request.trainingId(), request.start(), request.stop());
     }
 }
