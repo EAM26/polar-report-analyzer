@@ -17,6 +17,7 @@ public class Phase {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String name;
     private int start;
     private int stop;
     private Double hrAvg;

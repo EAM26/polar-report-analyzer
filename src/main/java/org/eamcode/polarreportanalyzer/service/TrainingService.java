@@ -21,13 +21,15 @@ public class TrainingService {
     private final MetaDataService metaDataService;
     private final DataPointService dataPointService;
     private final CsvReader csvReader;
+    private final PhaseService phaseService;
 
-    public TrainingService(TrainingRepository trainingRepository, ModelMapper modelMapper, MetaDataService metaDataService, DataPointService dataPointService, CsvReader csvReader) {
+    public TrainingService(TrainingRepository trainingRepository, ModelMapper modelMapper, MetaDataService metaDataService, DataPointService dataPointService, CsvReader csvReader, PhaseService phaseService) {
         this.trainingRepository = trainingRepository;
         this.modelMapper = modelMapper;
         this.metaDataService = metaDataService;
         this.dataPointService = dataPointService;
         this.csvReader = csvReader;
+        this.phaseService = phaseService;
     }
 
     @Transactional
@@ -35,9 +37,15 @@ public class TrainingService {
         Training training = modelMapper.mapToTrainingEntity(request);
         training.setCreatedAt(LocalDateTime.now());
 
+//        Get all data for training
         List<String[]> allDataRows = getAllDataRows(training);
         metaDataService.setTrainingFields(training, allDataRows.get(1));
         dataPointService.addDataPointsForTraining(training, allDataRows);
+//        Create Standard phase
+
+
+//        phaseService.createPhase(PhaseRequest.builder());
+
         trainingRepository.save(training);
 
         return modelMapper.mapTrainingToResponse(training);
