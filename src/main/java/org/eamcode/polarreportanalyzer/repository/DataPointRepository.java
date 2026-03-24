@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DataPointRepository extends JpaRepository<DataPoint, Long> {
@@ -14,5 +15,5 @@ public interface DataPointRepository extends JpaRepository<DataPoint, Long> {
             Integer end
     );
 
-    DataPoint findDataPointByTrainingIdAndRelativeSecond(Long trainingId, Integer relativeSecond);
+    Optional<DataPoint> findDataPointByTrainingIdAndRelativeSecond(Long trainingId, Integer relativeSecond);
 }

@@ -104,7 +104,7 @@ public class ModelMapper {
                 phase.getSpeedAvg(),
                 phase.getDistance(),
                 phase.getTraining().getId(),
-                phaseSnapshotService.getSnapshots(phase, phase.getTraining().getDataPoints()));
+                phaseSnapshotService.getSnapshots(phase));
     }
 
     public Phase updatePhaseFromRequest(PhaseRequest request, Phase phase) {
