@@ -1,5 +1,7 @@
 package org.eamcode.polarreportanalyzer.dto;
 
+import java.util.List;
+
 public record PhaseResponse(
         long id,
         String name,
@@ -8,6 +10,7 @@ public record PhaseResponse(
         Double hrAvg,
         Double speedAvg,
         Double distance,
-        long trainingId
+        long trainingId,
+        List<PhaseSnapshotResponse> snapshots
 ) {
 }

@@ -14,4 +14,5 @@ public interface DataPointRepository extends JpaRepository<DataPoint, Long> {
             Integer end
     );
 
+    DataPoint findDataPointByTrainingIdAndRelativeSecond(Long trainingId, Integer relativeSecond);
 }

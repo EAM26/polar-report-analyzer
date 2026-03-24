@@ -8,15 +8,18 @@ import org.eamcode.polarreportanalyzer.exception.RecordNotFoundException;
 import org.eamcode.polarreportanalyzer.model.Phase;
 import org.eamcode.polarreportanalyzer.model.Training;
 import org.eamcode.polarreportanalyzer.repository.TrainingRepository;
+import org.eamcode.polarreportanalyzer.service.PhaseSnapshotService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ModelMapper {
 
     private final TrainingRepository trainingRepository;
+    private final PhaseSnapshotService phaseSnapshotService;
 
-    public ModelMapper(TrainingRepository trainingRepository) {
+    public ModelMapper(TrainingRepository trainingRepository, PhaseSnapshotService phaseSnapshotService) {
         this.trainingRepository = trainingRepository;
+        this.phaseSnapshotService = phaseSnapshotService;
     }
 
     public TrainingResponse mapTrainingToResponse(Training training) {
@@ -100,8 +103,8 @@ public class ModelMapper {
                 phase.getHrAvg(),
                 phase.getSpeedAvg(),
                 phase.getDistance(),
-                phase.getTraining().getId()
-        );
+                phase.getTraining().getId(),
+                phaseSnapshotService.getSnapshots(phase, phase.getTraining().getDataPoints()));
     }
 
     public Phase updatePhaseFromRequest(PhaseRequest request, Phase phase) {
