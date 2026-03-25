@@ -1,5 +1,6 @@
 package org.eamcode.polarreportanalyzer.controller;
 
+import org.eamcode.polarreportanalyzer.dto.PhaseIntervalRequest;
 import org.eamcode.polarreportanalyzer.dto.PhaseRequest;
 import org.eamcode.polarreportanalyzer.dto.PhaseResponse;
 import org.eamcode.polarreportanalyzer.service.PhaseService;
@@ -28,6 +29,11 @@ public class PhaseController {
                 .buildAndExpand(createdPhase.id())
                 .toUri();
         return ResponseEntity.created(location).body(createdPhase);
+    }
+
+    @PostMapping("/interval")
+    public ResponseEntity<List<PhaseResponse>> createInterval(@RequestBody PhaseIntervalRequest request) {
+        return ResponseEntity.ok(phaseService.createInterval(request).stream().toList());
     }
 
     @GetMapping

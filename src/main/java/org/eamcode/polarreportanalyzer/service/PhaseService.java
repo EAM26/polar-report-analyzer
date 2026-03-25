@@ -1,5 +1,6 @@
 package org.eamcode.polarreportanalyzer.service;
 
+import org.eamcode.polarreportanalyzer.dto.PhaseIntervalRequest;
 import org.eamcode.polarreportanalyzer.dto.PhaseRequest;
 import org.eamcode.polarreportanalyzer.dto.PhaseResponse;
 import org.eamcode.polarreportanalyzer.exception.RecordNotFoundException;
@@ -10,8 +11,10 @@ import org.eamcode.polarreportanalyzer.util.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PhaseService {
@@ -70,16 +73,16 @@ public class PhaseService {
     }
 
     private void setStartAndStop(Phase phase) {
-//        Todo check if stop is in bounds of relative seconds
         int lastSecondOfTraining = phase.getTraining().getDataPoints().getLast().getRelativeSecond();
-        List<Phase> phases = phase.getTraining().getPhases();
+//        List<Phase> phases = phase.getTraining().getPhases();
+        Optional<Phase> previousPhase = phaseRepository.findTopByTrainingIdOrderByStopDesc(phase.getTraining().getId());
         int startOfPhase;
         int stopOfPhase;
-        if (phases.isEmpty()) {
+        if (previousPhase.isEmpty()) {
             startOfPhase = 0;
             stopOfPhase = phase.getDuration() -1;
         } else {
-            startOfPhase = phases.getLast().getStop() + 1;
+            startOfPhase = previousPhase.get().getStop() + 1;
             stopOfPhase = startOfPhase + phase.getDuration() - 1;
         }
 
@@ -94,8 +97,6 @@ public class PhaseService {
     }
 
     private void setMaxAndMinHr(Phase phase) {
-        System.out.println(phase.getStart());
-        System.out.println(phase.getStop());
         List<Integer> heartRates = phase.getTraining().getDataPoints().stream()
                 .filter(dataPoint -> dataPoint.getRelativeSecond() >= phase.getStart() &&
                         dataPoint.getRelativeSecond() <= phase.getStop())
@@ -103,5 +104,16 @@ public class PhaseService {
                 .toList();
         phase.setHrMax(Collections.max(heartRates));
         phase.setHrMin(Collections.min(heartRates));
+    }
+
+    @Transactional
+    public List<PhaseResponse> createInterval(PhaseIntervalRequest request) {
+        List<PhaseResponse> responses = new ArrayList<>();
+        for (int i = 0; i < request.factor(); i++) {
+            for(PhaseRequest singlePhase: request.requests()) {
+                responses.add(createPhase(singlePhase));
+            }
+        }
+        return responses;
     }
 }
