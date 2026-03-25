@@ -25,13 +25,19 @@ public class PhaseService {
 
     @Transactional
     public PhaseResponse createPhase(PhaseRequest request) {
-       Phase phase = modelMapper.mapToPhaseEntity(request);
-       phase = setStartAndStop(phase);
-       List<Double> values = phaseCalculatorService.calculateAvgs(phase);
-       phase.setHrAvg(values.getFirst());
-       phase.setDistance(values.get(1));
-       phase.setSpeedAvg(values.getLast());
-       return modelMapper.mapPhaseToResponse(phaseRepository.save(phase));
+        if(request.duration() < 1) {
+            throw new IllegalArgumentException("Duration must be at least 1 second.");
+        }
+        Phase phase = modelMapper.mapToPhaseEntity(request);
+
+//       set start and stop on base of duration and previous phase
+        setStartAndStop(phase);
+
+        List<Double> values = phaseCalculatorService.calculateAvgs(phase);
+        phase.setHrAvg(values.getFirst());
+        phase.setDistance(values.get(1));
+        phase.setSpeedAvg(values.getLast());
+        return modelMapper.mapPhaseToResponse(phaseRepository.save(phase));
     }
 
     public List<PhaseResponse> getAllPhases() {
@@ -39,10 +45,9 @@ public class PhaseService {
     }
 
     public PhaseResponse getPhaseById(long id) {
-            return phaseRepository.findById(id).map(modelMapper::mapPhaseToResponse).orElseThrow(() ->
+        return phaseRepository.findById(id).map(modelMapper::mapPhaseToResponse).orElseThrow(() ->
                 new RecordNotFoundException("No"));
     }
-
 
 
     public void deletePhaseById(long id) {
@@ -53,18 +58,18 @@ public class PhaseService {
         Phase phase = phaseRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException("No phase found with id: " + id));
 
-        Phase phaseUpdated =  phaseRepository.save(modelMapper.updatePhaseFromRequest(request, phase));
+        Phase phaseUpdated = phaseRepository.save(modelMapper.updatePhaseFromRequest(request, phase));
         return modelMapper.mapPhaseToResponse(phaseUpdated);
     }
 
     private Phase setStartAndStop(Phase phase) {
         List<Phase> phases = phase.getTraining().getPhases();
-        if(phases.isEmpty()) {
+        if (phases.isEmpty()) {
             phase.setStart(0);
-            phase.setStop(phase.getDuration() -1);
+            phase.setStop(phase.getDuration() - 1);
         } else {
             phase.setStart(phases.getLast().getStop() + 1);
-            phase.setStop(phase.getStart() + phase.getDuration() -1);
+            phase.setStop(phase.getStart() + phase.getDuration() - 1);
         }
         return phase;
     }

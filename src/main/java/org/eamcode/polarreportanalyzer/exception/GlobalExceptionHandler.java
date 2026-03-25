@@ -21,7 +21,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CsvParsingException.class)
     public ResponseEntity<ErrorResponse> handleCsvParsingException(CsvParsingException ex, HttpServletRequest request) {
-        log.error("A Csv Parser error occured" ,ex);
+        log.warn("A Csv Parser error occured" ,ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(400, ex.getMessage(), request.getRequestURI()));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest request) {
+        log.warn("Request contained an invalid argument" ,ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(400, ex.getMessage(), request.getRequestURI()));
     }
