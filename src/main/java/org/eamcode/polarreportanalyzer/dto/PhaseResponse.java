@@ -8,6 +8,8 @@ public record PhaseResponse(
         int duration,
         int start,
         int stop,
+        int hrMax,
+        int hrMin,
         Double hrAvg,
         Double speedAvg,
         Double distance,

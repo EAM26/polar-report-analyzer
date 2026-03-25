@@ -97,6 +97,8 @@ public class ModelMapper {
                 phase.getDuration(),
                 phase.getStart(),
                 phase.getStop(),
+                phase.getHrMax(),
+                phase.getHrMin(),
                 phase.getHrAvg(),
                 phase.getSpeedAvg(),
                 phase.getDistance(),

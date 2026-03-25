@@ -3,12 +3,14 @@ package org.eamcode.polarreportanalyzer.service;
 import org.eamcode.polarreportanalyzer.dto.PhaseRequest;
 import org.eamcode.polarreportanalyzer.dto.PhaseResponse;
 import org.eamcode.polarreportanalyzer.exception.RecordNotFoundException;
+import org.eamcode.polarreportanalyzer.model.DataPoint;
 import org.eamcode.polarreportanalyzer.model.Phase;
 import org.eamcode.polarreportanalyzer.repository.PhaseRepository;
 import org.eamcode.polarreportanalyzer.util.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -25,18 +27,23 @@ public class PhaseService {
 
     @Transactional
     public PhaseResponse createPhase(PhaseRequest request) {
-        if(request.duration() < 1) {
+        if (request.duration() < 1) {
             throw new IllegalArgumentException("Duration must be at least 1 second.");
         }
         Phase phase = modelMapper.mapToPhaseEntity(request);
 
-//       set start and stop on base of duration and previous phase
-        setStartAndStop(phase);
 
+//       set hard values
+        setStartAndStop(phase);
+        setMaxAndMinHr(phase);
+
+
+//        set calculated values
         List<Double> values = phaseCalculatorService.calculateAvgs(phase);
         phase.setHrAvg(values.getFirst());
         phase.setDistance(values.get(1));
         phase.setSpeedAvg(values.getLast());
+
         return modelMapper.mapPhaseToResponse(phaseRepository.save(phase));
     }
 
@@ -62,7 +69,7 @@ public class PhaseService {
         return modelMapper.mapPhaseToResponse(phaseUpdated);
     }
 
-    private Phase setStartAndStop(Phase phase) {
+    private void setStartAndStop(Phase phase) {
         List<Phase> phases = phase.getTraining().getPhases();
         if (phases.isEmpty()) {
             phase.setStart(0);
@@ -71,6 +78,16 @@ public class PhaseService {
             phase.setStart(phases.getLast().getStop() + 1);
             phase.setStop(phase.getStart() + phase.getDuration() - 1);
         }
-        return phase;
+
+    }
+
+    private void setMaxAndMinHr(Phase phase) {
+        List<Integer> heartRates = phase.getTraining().getDataPoints().stream()
+                .filter(dataPoint -> dataPoint.getRelativeSecond() >= phase.getStart() &&
+                        dataPoint.getRelativeSecond() <= phase.getStop())
+                .map(DataPoint::getHeartRate)
+                .toList();
+        phase.setHrMax(Collections.max(heartRates));
+        phase.setHrMin(Collections.min(heartRates));
     }
 }

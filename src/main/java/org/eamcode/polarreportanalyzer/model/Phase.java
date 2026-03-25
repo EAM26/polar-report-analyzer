@@ -21,6 +21,8 @@ public class Phase {
     private int duration;
     private int start;
     private int stop;
+    private int hrMax;
+    private int hrMin;
     private Double hrAvg;
     private Double speedAvg;
     private Double distance;
