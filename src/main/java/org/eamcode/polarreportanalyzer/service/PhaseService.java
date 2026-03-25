@@ -70,18 +70,32 @@ public class PhaseService {
     }
 
     private void setStartAndStop(Phase phase) {
+//        Todo check if stop is in bounds of relative seconds
+        int lastSecondOfTraining = phase.getTraining().getDataPoints().getLast().getRelativeSecond();
         List<Phase> phases = phase.getTraining().getPhases();
+        int startOfPhase;
+        int stopOfPhase;
         if (phases.isEmpty()) {
-            phase.setStart(0);
-            phase.setStop(phase.getDuration() - 1);
+            startOfPhase = 0;
+            stopOfPhase = phase.getDuration() -1;
         } else {
-            phase.setStart(phases.getLast().getStop() + 1);
-            phase.setStop(phase.getStart() + phase.getDuration() - 1);
+            startOfPhase = phases.getLast().getStop() + 1;
+            stopOfPhase = startOfPhase + phase.getDuration() - 1;
         }
+
+        if(startOfPhase > lastSecondOfTraining  || stopOfPhase > lastSecondOfTraining) {
+            throw new IllegalArgumentException("Phase duration out of bounds of total training time by " +
+                    (stopOfPhase - lastSecondOfTraining) + " second(s).");
+        }
+        phase.setStart(startOfPhase);
+        phase.setStop(stopOfPhase);
+
 
     }
 
     private void setMaxAndMinHr(Phase phase) {
+        System.out.println(phase.getStart());
+        System.out.println(phase.getStop());
         List<Integer> heartRates = phase.getTraining().getDataPoints().stream()
                 .filter(dataPoint -> dataPoint.getRelativeSecond() >= phase.getStart() &&
                         dataPoint.getRelativeSecond() <= phase.getStop())
