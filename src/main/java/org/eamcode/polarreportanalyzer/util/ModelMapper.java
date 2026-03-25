@@ -85,11 +85,7 @@ public class ModelMapper {
                 new RecordNotFoundException("No training found with id: " + request.trainingId()));
         return Phase.builder()
                 .name(request.name())
-                .start(request.start())
-                .stop(request.stop())
-                .hrAvg(request.hrAvg())
-                .speedAvg(request.speedAvg())
-                .distance(request.distance())
+                .duration(request.duration())
                 .training(training)
                 .build();
     }
@@ -98,6 +94,7 @@ public class ModelMapper {
         return new PhaseResponse(
                 phase.getId(),
                 phase.getName(),
+                phase.getDuration(),
                 phase.getStart(),
                 phase.getStop(),
                 phase.getHrAvg(),
@@ -111,11 +108,7 @@ public class ModelMapper {
         Training training = trainingRepository.findById(request.trainingId()).orElseThrow(() ->
                 new RecordNotFoundException("No training found with id: " + request.trainingId()));
         phase.setName(request.name());
-        phase.setStart(request.start());
-        phase.setStop(request.stop());
-        phase.setHrAvg(request.hrAvg());
-        phase.setSpeedAvg(request.speedAvg());
-        phase.setDistance(request.distance());
+        phase.setDuration(request.duration());
         phase.setTraining(training);
 
         return phase;

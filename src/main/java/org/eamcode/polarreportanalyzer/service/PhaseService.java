@@ -7,6 +7,7 @@ import org.eamcode.polarreportanalyzer.model.Phase;
 import org.eamcode.polarreportanalyzer.repository.PhaseRepository;
 import org.eamcode.polarreportanalyzer.util.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,9 +23,11 @@ public class PhaseService {
         this.phaseCalculatorService = phaseCalculatorService;
     }
 
+    @Transactional
     public PhaseResponse createPhase(PhaseRequest request) {
        Phase phase = modelMapper.mapToPhaseEntity(request);
-       List<Double> values = phaseCalculatorService.calculateAvgs(request);
+       phase = setStartAndStop(phase);
+       List<Double> values = phaseCalculatorService.calculateAvgs(phase);
        phase.setHrAvg(values.getFirst());
        phase.setDistance(values.get(1));
        phase.setSpeedAvg(values.getLast());
@@ -52,5 +55,17 @@ public class PhaseService {
 
         Phase phaseUpdated =  phaseRepository.save(modelMapper.updatePhaseFromRequest(request, phase));
         return modelMapper.mapPhaseToResponse(phaseUpdated);
+    }
+
+    private Phase setStartAndStop(Phase phase) {
+        List<Phase> phases = phase.getTraining().getPhases();
+        if(phases.isEmpty()) {
+            phase.setStart(0);
+            phase.setStop(phase.getDuration() -1);
+        } else {
+            phase.setStart(phases.getLast().getStop() + 1);
+            phase.setStop(phase.getStart() + phase.getDuration() -1);
+        }
+        return phase;
     }
 }

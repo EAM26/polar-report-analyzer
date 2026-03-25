@@ -1,7 +1,7 @@
 package org.eamcode.polarreportanalyzer.service;
 
-import org.eamcode.polarreportanalyzer.dto.PhaseRequest;
 import org.eamcode.polarreportanalyzer.model.DataPoint;
+import org.eamcode.polarreportanalyzer.model.Phase;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +15,8 @@ public class PhaseCalculatorService {
         this.dataPointService = dataPointService;
     }
 
-    public List<Double> calculateAvgs(PhaseRequest request) {
-        List<DataPoint> phaseDataPoints = dataPointService.getPhaseDataPoints(request);
+    public List<Double> calculateAvgs(Phase phase) {
+        List<DataPoint> phaseDataPoints = dataPointService.getPhaseDataPoints(phase);
 
         return List.of(getHrAvg(phaseDataPoints), getTotalDistance(phaseDataPoints),
                 getSpeedAvg(getTotalDistance(phaseDataPoints), phaseDataPoints));

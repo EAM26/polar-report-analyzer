@@ -18,6 +18,7 @@ public class Phase {
     private Long id;
 
     private String name;
+    private int duration;
     private int start;
     private int stop;
     private Double hrAvg;

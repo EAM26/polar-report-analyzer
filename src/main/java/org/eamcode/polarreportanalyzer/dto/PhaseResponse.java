@@ -5,6 +5,7 @@ import java.util.List;
 public record PhaseResponse(
         long id,
         String name,
+        int duration,
         int start,
         int stop,
         Double hrAvg,

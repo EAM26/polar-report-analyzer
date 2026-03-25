@@ -21,15 +21,13 @@ public class TrainingService {
     private final MetaDataService metaDataService;
     private final DataPointService dataPointService;
     private final CsvReader csvReader;
-    private final PhaseService phaseService;
 
-    public TrainingService(TrainingRepository trainingRepository, ModelMapper modelMapper, MetaDataService metaDataService, DataPointService dataPointService, CsvReader csvReader, PhaseService phaseService) {
+    public TrainingService(TrainingRepository trainingRepository, ModelMapper modelMapper, MetaDataService metaDataService, DataPointService dataPointService, CsvReader csvReader) {
         this.trainingRepository = trainingRepository;
         this.modelMapper = modelMapper;
         this.metaDataService = metaDataService;
         this.dataPointService = dataPointService;
         this.csvReader = csvReader;
-        this.phaseService = phaseService;
     }
 
     @Transactional
