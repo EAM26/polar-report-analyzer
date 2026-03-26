@@ -99,11 +99,13 @@ public class PhaseService {
     private void setMaxAndMinHr(Phase phase) {
         List<Integer> heartRates = phase.getTraining().getDataPoints().stream()
                 .filter(dataPoint -> dataPoint.getRelativeSecond() >= phase.getStart() &&
-                        dataPoint.getRelativeSecond() <= phase.getStop())
+                        dataPoint.getRelativeSecond() <= phase.getStop() && dataPoint.getHeartRate() != null)
                 .map(DataPoint::getHeartRate)
                 .toList();
-        phase.setHrMax(Collections.max(heartRates));
-        phase.setHrMin(Collections.min(heartRates));
+        if(!heartRates.isEmpty()) {
+            phase.setHrMax(Collections.max(heartRates));
+            phase.setHrMin(Collections.min(heartRates));
+        }
     }
 
     @Transactional

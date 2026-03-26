@@ -24,10 +24,12 @@ public class PhaseCalculatorService {
 
     public Double getHrAvg(List<DataPoint> dataPoints) {
         return dataPoints.stream()
+                .filter(dataPoint -> dataPoint.getHeartRate() != null)
                 .mapToInt(DataPoint::getHeartRate)
                 .average()
                 .orElse(0d);
     }
+
 
     public Double getTotalDistance(List<DataPoint> dataPoints) {
         return dataPoints.getLast().getDistance() - dataPoints.getFirst().getDistance();

@@ -4,6 +4,6 @@ package org.eamcode.polarreportanalyzer.dto;
 public record PhaseRequest(
         String name,
         int duration,
-        long trainingId
+        Long trainingId
 ) {
 }
