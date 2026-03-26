@@ -17,8 +17,12 @@ public class Phase {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String name;
+    private int duration;
     private int start;
     private int stop;
+    private Integer hrMax;
+    private Integer hrMin;
     private Double hrAvg;
     private Double speedAvg;
     private Double distance;

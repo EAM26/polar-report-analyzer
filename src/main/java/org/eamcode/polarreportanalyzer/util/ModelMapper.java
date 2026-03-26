@@ -8,15 +8,18 @@ import org.eamcode.polarreportanalyzer.exception.RecordNotFoundException;
 import org.eamcode.polarreportanalyzer.model.Phase;
 import org.eamcode.polarreportanalyzer.model.Training;
 import org.eamcode.polarreportanalyzer.repository.TrainingRepository;
+import org.eamcode.polarreportanalyzer.service.PhaseSnapshotService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ModelMapper {
 
     private final TrainingRepository trainingRepository;
+    private final PhaseSnapshotService phaseSnapshotService;
 
-    public ModelMapper(TrainingRepository trainingRepository) {
+    public ModelMapper(TrainingRepository trainingRepository, PhaseSnapshotService phaseSnapshotService) {
         this.trainingRepository = trainingRepository;
+        this.phaseSnapshotService = phaseSnapshotService;
     }
 
     public TrainingResponse mapTrainingToResponse(Training training) {
@@ -81,11 +84,8 @@ public class ModelMapper {
         Training training = trainingRepository.findById(request.trainingId()).orElseThrow(() ->
                 new RecordNotFoundException("No training found with id: " + request.trainingId()));
         return Phase.builder()
-                .start(request.start())
-                .stop(request.stop())
-                .hrAvg(request.hrAvg())
-                .speedAvg(request.speedAvg())
-                .distance(request.distance())
+                .name(request.name())
+                .duration(request.duration())
                 .training(training)
                 .build();
     }
@@ -93,23 +93,24 @@ public class ModelMapper {
     public PhaseResponse mapPhaseToResponse(Phase phase) {
         return new PhaseResponse(
                 phase.getId(),
+                phase.getName(),
+                phase.getDuration(),
                 phase.getStart(),
                 phase.getStop(),
+                phase.getHrMax(),
+                phase.getHrMin(),
                 phase.getHrAvg(),
                 phase.getSpeedAvg(),
                 phase.getDistance(),
-                phase.getTraining().getId()
-        );
+                phase.getTraining().getId(),
+                phaseSnapshotService.getSnapshots(phase));
     }
 
     public Phase updatePhaseFromRequest(PhaseRequest request, Phase phase) {
         Training training = trainingRepository.findById(request.trainingId()).orElseThrow(() ->
                 new RecordNotFoundException("No training found with id: " + request.trainingId()));
-        phase.setStart(request.start());
-        phase.setStop(request.stop());
-        phase.setHrAvg(request.hrAvg());
-        phase.setSpeedAvg(request.speedAvg());
-        phase.setDistance(request.distance());
+        phase.setName(request.name());
+        phase.setDuration(request.duration());
         phase.setTraining(training);
 
         return phase;
