@@ -87,8 +87,8 @@ public class PhaseService {
         }
 
         if(startOfPhase > lastSecondOfTraining  || stopOfPhase > lastSecondOfTraining) {
-            throw new IllegalArgumentException("Phase duration out of bounds of total training time by " +
-                    (stopOfPhase - lastSecondOfTraining) + " second(s).");
+            throw new IllegalArgumentException("Duration value out of reach. Time remaining: " +
+                    remainingSeconds(previousPhase, lastSecondOfTraining) + " seconds.");
         }
         phase.setStart(startOfPhase);
         phase.setStop(stopOfPhase);
@@ -117,5 +117,12 @@ public class PhaseService {
             }
         }
         return responses;
+    }
+
+    private int remainingSeconds(Optional<Phase> previousPhase, int lastSecondOfTraining) {
+        if(previousPhase.isPresent()) {
+            return lastSecondOfTraining - previousPhase.get().getStop();
+        }
+        return lastSecondOfTraining + 1;
     }
 }
