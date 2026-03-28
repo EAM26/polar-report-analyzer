@@ -22,7 +22,7 @@ public class PhaseSnapshotService {
     public List<PhaseSnapshotResponse> getSnapshots(Phase phase) {
         List<PhaseSnapshotResponse> snapshots = new ArrayList<>();
         for (PhaseSnapshotType phaseSnapshotType : PhaseSnapshotType.values()) {
-          Optional <PhaseSnapshotResponse> snapshotResponse = createSnapshot(phase, phaseSnapshotType);
+            Optional<PhaseSnapshotResponse> snapshotResponse = createSnapshot(phase, phaseSnapshotType);
             snapshotResponse.ifPresent(snapshots::add);
         }
 
