@@ -5,6 +5,7 @@ import org.eamcode.polarreportanalyzer.dto.TrainingResponse;
 import org.eamcode.polarreportanalyzer.exception.RecordNotFoundException;
 import org.eamcode.polarreportanalyzer.model.Training;
 import org.eamcode.polarreportanalyzer.repository.TrainingRepository;
+import org.eamcode.polarreportanalyzer.service.imp.DefaultDataPointService;
 import org.eamcode.polarreportanalyzer.util.CsvReader;
 import org.eamcode.polarreportanalyzer.util.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,10 @@ public class TrainingService {
     private final TrainingRepository trainingRepository;
     private final ModelMapper modelMapper;
     private final MetaDataService metaDataService;
-    private final DataPointService dataPointService;
+    private final DefaultDataPointService dataPointService;
     private final CsvReader csvReader;
 
-    public TrainingService(TrainingRepository trainingRepository, ModelMapper modelMapper, MetaDataService metaDataService, DataPointService dataPointService, CsvReader csvReader) {
+    public TrainingService(TrainingRepository trainingRepository, ModelMapper modelMapper, MetaDataService metaDataService, DefaultDataPointService dataPointService, CsvReader csvReader) {
         this.trainingRepository = trainingRepository;
         this.modelMapper = modelMapper;
         this.metaDataService = metaDataService;
