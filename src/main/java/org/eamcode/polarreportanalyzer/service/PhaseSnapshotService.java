@@ -46,10 +46,11 @@ public class PhaseSnapshotService {
                 .map(dataPoint -> (
                         new PhaseSnapshotResponse(
                                 type,
-                                dataPoint.getHeartRate(),
-                                dataPoint.getDistance(),
+                                dataPoint.getHeartRate(), dataPoint.getDistance(),
                                 dataPoint.getCadence(),
-                                dataPoint.getPower()
+                                dataPoint.getPower(),
+                                dataPoint.getTemperature(),
+                                dataPoint.getAltitude()
                         )
                 ));
 

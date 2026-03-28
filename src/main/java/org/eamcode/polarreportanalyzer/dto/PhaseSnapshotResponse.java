@@ -7,6 +7,9 @@ public record PhaseSnapshotResponse(
         int hr,
         double distance,
         int cadence,
-        int power
+        int power,
+        double temperature,
+        double altitude
+
 ) {
 }
