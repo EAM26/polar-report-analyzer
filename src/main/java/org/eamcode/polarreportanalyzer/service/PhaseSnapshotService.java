@@ -22,7 +22,7 @@ public class PhaseSnapshotService {
     public List<PhaseSnapshotResponse> getSnapshots(Phase phase) {
         List<PhaseSnapshotResponse> snapshots = new ArrayList<>();
         for (PhaseSnapshotType phaseSnapshotType : PhaseSnapshotType.values()) {
-          Optional <PhaseSnapshotResponse> snapshotResponse = createSnapshot(phase, phaseSnapshotType);
+            Optional<PhaseSnapshotResponse> snapshotResponse = createSnapshot(phase, phaseSnapshotType);
             snapshotResponse.ifPresent(snapshots::add);
         }
 
@@ -46,10 +46,11 @@ public class PhaseSnapshotService {
                 .map(dataPoint -> (
                         new PhaseSnapshotResponse(
                                 type,
-                                dataPoint.getHeartRate(),
-                                dataPoint.getDistance(),
+                                dataPoint.getHeartRate(), dataPoint.getDistance(),
                                 dataPoint.getCadence(),
-                                dataPoint.getPower()
+                                dataPoint.getPower(),
+                                dataPoint.getTemperature(),
+                                dataPoint.getAltitude()
                         )
                 ));
 

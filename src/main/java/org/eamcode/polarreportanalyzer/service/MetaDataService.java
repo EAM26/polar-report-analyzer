@@ -17,5 +17,7 @@ public class MetaDataService {
         training.setHrAvg(metaData[6]);
         training.setSpeedAvg(metaData[7]);
         training.setCadenceAvg(metaData[15]);
+        training.setAscent(metaData[19]);
+        training.setDescent(metaData[20]);
     }
 }

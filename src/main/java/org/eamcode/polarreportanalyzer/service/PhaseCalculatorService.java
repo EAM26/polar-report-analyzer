@@ -2,6 +2,7 @@ package org.eamcode.polarreportanalyzer.service;
 
 import org.eamcode.polarreportanalyzer.model.DataPoint;
 import org.eamcode.polarreportanalyzer.model.Phase;
+import org.eamcode.polarreportanalyzer.service.imp.DefaultDataPointService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,9 +10,9 @@ import java.util.List;
 @Service
 public class PhaseCalculatorService {
 
-    private final DataPointService dataPointService;
+    private final DefaultDataPointService dataPointService;
 
-    PhaseCalculatorService(DataPointService dataPointService) {
+    PhaseCalculatorService(DefaultDataPointService dataPointService) {
         this.dataPointService = dataPointService;
     }
 
