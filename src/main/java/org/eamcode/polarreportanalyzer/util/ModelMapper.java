@@ -38,6 +38,8 @@ public class ModelMapper {
                 training.getSpeedAvg(),
                 training.getTotalDistance(),
                 training.getCadenceAvg(),
+                training.getAscent(),
+                training.getDescent(),
                 training.getPhases().stream().map(this::mapPhaseToResponse).toList()
         );
     }
