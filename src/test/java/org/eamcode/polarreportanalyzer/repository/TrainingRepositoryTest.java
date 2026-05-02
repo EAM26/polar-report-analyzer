@@ -99,7 +99,6 @@ class TrainingRepositoryTest {
         trainingRepository.save(trainingCycling);
 
         //Act
-//        Optional<Training> returnedTraining = trainingRepository.findById(savedTrainingOne.getId());
         List<Training> returnedTrainings = trainingRepository.findBySportIgnoreCase("running");
         //Assert
         assertThat(returnedTrainings).hasSize(2);
@@ -107,4 +106,37 @@ class TrainingRepositoryTest {
         assertThat(returnedTrainings).contains(trainingTwo);
         assertThat(returnedTrainings).doesNotContain(trainingCycling);
     }
+
+    @Test
+    public void shouldReturnUpdatedTrainingDescription() {
+
+        //Arrange
+        Training savedTrainingOne = trainingRepository.save(trainingOne);
+        Training originalTraining = trainingRepository.findById(savedTrainingOne.getId()).get();
+        originalTraining.setDescription("Updated Description");
+        Training updatedTraining = trainingRepository.save(originalTraining);
+
+        //Act
+        Optional<Training> returnedTraining = trainingRepository.findById(updatedTraining.getId());
+
+        //Assert
+        assertThat(returnedTraining).isPresent();
+        assertThat(returnedTraining.get().getDescription()).isEqualTo("Updated Description");
+        assertThat(returnedTraining.get().getDescription()).isNotEqualTo("Failing Description");
+    }
+
+    @Test
+    public void shouldDeleteTrainingAndReturnEmpty() {
+
+        //Arrange
+        Training savedTrainingOne = trainingRepository.save(trainingOne);
+        trainingRepository.deleteById(savedTrainingOne.getId());
+
+        //Act
+        Optional<Training> returnedTraining = trainingRepository.findById(savedTrainingOne.getId());
+
+        //Assert
+        assertThat(returnedTraining).isEmpty();
+    }
 }
+
