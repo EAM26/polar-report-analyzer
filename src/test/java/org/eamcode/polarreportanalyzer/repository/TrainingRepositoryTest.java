@@ -87,6 +87,7 @@ class TrainingRepositoryTest {
         assertThat(returnedTraining.get()).isEqualTo(trainingOne);
     }
 
+
     @Test
     public void shouldReturnTwoTrainingsBySportRunning() {
 
