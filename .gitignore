@@ -6,6 +6,7 @@ target/
 /src/main/resources/data/
 
 
+
 ### STS ###
 .apt_generated
 .classpath
@@ -14,6 +15,11 @@ target/
 .settings
 .springBeans
 .sts4-cache
+
+# Local H2 database files
+data/
+*.mv.db
+*.trace.db
 
 ### IntelliJ IDEA ###
 .idea
